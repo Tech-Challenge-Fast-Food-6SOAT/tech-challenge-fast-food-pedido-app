@@ -2,10 +2,17 @@
 import type { FastifyInstance } from 'fastify';
 
 import { PedidoController } from '../adapters/controllers';
-import { PagamentoGateway, PedidoGateway } from '../adapters/gateways';
+import {
+  PagamentoGateway,
+  PedidoGateway,
+  ProdutoGateway,
+} from '../adapters/gateways';
 import { CheckoutUseCase, PedidoUseCase } from '../application/usecases';
 import { PedidoDbConnection } from '../infra/database/mongodb/db-connections';
-import { MicrosservicoPagamento } from '../infra/microsservicoPagamento';
+import {
+  MicrosservicoPagamento,
+  MicrosservicoProduto,
+} from '../infra/microsservico';
 
 const apiRoutes = async (app: FastifyInstance): Promise<void> => {
   const pedidoDbConnection = new PedidoDbConnection();
@@ -13,7 +20,13 @@ const apiRoutes = async (app: FastifyInstance): Promise<void> => {
   const pedidoUseCase = new PedidoUseCase(pedidoGateway);
   const microsservicoPagamentoGateway = new MicrosservicoPagamento();
   const pagamentoGateway = new PagamentoGateway(microsservicoPagamentoGateway);
-  const checkoutUseCase = new CheckoutUseCase(pedidoUseCase, pagamentoGateway);
+  const microsservicoProduto = new MicrosservicoProduto();
+  const produtoGateway = new ProdutoGateway(microsservicoProduto);
+  const checkoutUseCase = new CheckoutUseCase(
+    pedidoUseCase,
+    pagamentoGateway,
+    produtoGateway
+  );
   const pedidoController = new PedidoController(pedidoUseCase, checkoutUseCase);
 
   app.get('/pedidos', async (request, reply) => {

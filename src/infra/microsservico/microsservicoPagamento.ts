@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 import type { Pedido } from '../../domain/entities';
-import type { IMicrosservicoPagamentoGateway } from '../../interfaces/microsservicoPagamento';
+import type { IMicrosservicoPagamento } from '../../interfaces/microsservico';
 import { Logger } from '../logs/logger';
 
-export class MicrosservicoPagamento implements IMicrosservicoPagamentoGateway {
+export class MicrosservicoPagamento implements IMicrosservicoPagamento {
   public async gerarPagamento(pedido: Pedido): Promise<{ qrCode: string }> {
     const data = await axios
       .post<{ qrCode: string }>('http://localhost:4000/pagamento', {

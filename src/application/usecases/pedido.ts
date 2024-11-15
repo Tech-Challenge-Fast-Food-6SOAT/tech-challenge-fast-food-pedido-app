@@ -1,6 +1,6 @@
 import type { PedidoGateway } from '../../adapters/gateways';
 import type { Pedido } from '../../domain/entities';
-import type { PedidoProdutos } from '../../types/pedido-produtos';
+import type { PedidoProdutos } from '../../types';
 import type { PagamentoStatus, Status } from '../../value-objects';
 
 export class PedidoUseCase {

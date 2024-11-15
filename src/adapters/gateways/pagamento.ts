@@ -1,13 +1,13 @@
 import type { Pedido } from '../../domain/entities';
 import type { IPagamentoGateway } from '../../interfaces/gateways';
-import type { IMicrosservicoPagamentoGateway } from '../../interfaces/microsservicoPagamento';
+import type { IMicrosservicoPagamento } from '../../interfaces/microsservico';
 
 export class PagamentoGateway implements IPagamentoGateway {
   public constructor(
-    private readonly microsservicoPagamentoGateway: IMicrosservicoPagamentoGateway
+    private readonly microsservicoPagamento: IMicrosservicoPagamento
   ) {}
 
   public async gerarPagamento(pedido: Pedido): Promise<{ qrCode: string }> {
-    return this.microsservicoPagamentoGateway.gerarPagamento(pedido);
+    return this.microsservicoPagamento.gerarPagamento(pedido);
   }
 }

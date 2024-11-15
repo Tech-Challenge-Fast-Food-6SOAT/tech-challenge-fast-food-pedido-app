@@ -1,5 +1,5 @@
 import type { Pedido } from '../../domain/entities';
 
-export interface IMicrosservicoPagamentoGateway {
+export interface IMicrosservicoPagamento {
   gerarPagamento: (pedido: Pedido) => Promise<{ qrCode: string }>;
 }

@@ -1,5 +1,5 @@
 import type { Pedido } from '../../domain/entities/pedido';
-import type { PedidoProdutos } from '../../types/pedido-produtos';
+import type { PedidoProdutos } from '../../types';
 
 export interface IPedidoGateway {
   buscarPedidos: () => Promise<PedidoProdutos[]>;

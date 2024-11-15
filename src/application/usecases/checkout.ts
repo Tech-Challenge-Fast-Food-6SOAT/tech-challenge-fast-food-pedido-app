@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import type { IPagamentoGateway } from '../../interfaces/gateways';
-import type { Produto } from '../../types/produto';
+import type {
+  IPagamentoGateway,
+  IProdutoGateway,
+} from '../../interfaces/gateways';
+import type { Produto } from '../../types';
 import { CPF, PagamentoStatus, Status } from '../../value-objects';
 import type { PedidoUseCase } from './pedido';
 
@@ -9,7 +12,8 @@ export class CheckoutUseCase {
 
   public constructor(
     private readonly pedidoUseCase: PedidoUseCase,
-    private readonly pagamentoGateway: IPagamentoGateway
+    private readonly pagamentoGateway: IPagamentoGateway,
+    private readonly produtoGateway: IProdutoGateway
   ) {}
 
   public async checkout({
@@ -41,11 +45,7 @@ export class CheckoutUseCase {
   ): Promise<void> {
     if (!produtos?.length) throw new Error('Produtos não informados');
     const produtosPromises = produtos.map(async ({ id, quantidade }) => {
-      const produto = {
-        nome: `Nome do Produto ${id}`,
-        preco: 10,
-        descricao: 'Descrição do produto',
-      };
+      const produto = await this.produtoGateway.buscarProdutoPorId(id);
       if (!produto) throw new Error('Produto não encontrado');
       return {
         produto: {
