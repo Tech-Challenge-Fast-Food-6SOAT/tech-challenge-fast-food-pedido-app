@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import type { IPagamentoGateway } from '../../interfaces/gateways';
 import type { Produto } from '../../types/produto';
 import { CPF, PagamentoStatus, Status } from '../../value-objects';
 import type { PedidoUseCase } from './pedido';
@@ -6,7 +7,10 @@ import type { PedidoUseCase } from './pedido';
 export class CheckoutUseCase {
   private _produtos: { produto: Produto; quantidade: number }[] = [];
 
-  public constructor(private readonly pedidoUseCase: PedidoUseCase) {}
+  public constructor(
+    private readonly pedidoUseCase: PedidoUseCase,
+    private readonly pagamentoGateway: IPagamentoGateway
+  ) {}
 
   public async checkout({
     produtos,
@@ -14,7 +18,7 @@ export class CheckoutUseCase {
   }: {
     produtos: { id: string; quantidade: number }[];
     cpf: string;
-  }): Promise<{ id: string; senha: string; qrcode: string }> {
+  }): Promise<{ id: string; senha: string; qrCode: string }> {
     const cliente = cpf ? new CPF(String(cpf)).getValue() : null;
     await this._adicionarProdutos(produtos);
 
@@ -27,7 +31,9 @@ export class CheckoutUseCase {
       senha: String(Math.floor(Math.random() * 10000)).padStart(4, '0'),
     });
 
-    return { id: pedidoCriado.id, senha: pedidoCriado.senha, qrcode: 'qrcode' };
+    const { qrCode } = await this.pagamentoGateway.gerarPagamento(pedidoCriado);
+
+    return { id: pedidoCriado.id, senha: pedidoCriado.senha, qrCode };
   }
 
   private async _adicionarProdutos(
@@ -36,7 +42,7 @@ export class CheckoutUseCase {
     if (!produtos?.length) throw new Error('Produtos não informados');
     const produtosPromises = produtos.map(async ({ id, quantidade }) => {
       const produto = {
-        nome: 'Nome do Produto',
+        nome: `Nome do Produto ${id}`,
         preco: 10,
         descricao: 'Descrição do produto',
       };
