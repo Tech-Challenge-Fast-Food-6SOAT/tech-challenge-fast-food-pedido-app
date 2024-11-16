@@ -34,17 +34,17 @@ const apiRoutes = async (app: FastifyInstance): Promise<void> => {
     return reply.status(response.statusCode).send(response.data);
   });
 
-  app.get('/pedidos/:id/status-pagamento', async (request, reply) => {
+  app.get('/pedidos/pedido/:id/status-pagamento', async (request, reply) => {
     const response = await pedidoController.statusPagamento(request);
     return reply.status(response.statusCode).send(response.data);
   });
 
-  app.patch('/pedidos/:id/status', async (request, reply) => {
+  app.patch('/pedidos/pedido/:id/status', async (request, reply) => {
     const response = await pedidoController.atualizarStatusPedido(request);
     return reply.status(response.statusCode).send(response.data);
   });
 
-  app.post('/pedidos/checkout', async (request, reply) => {
+  app.post('/pedidos/pedido/checkout', async (request, reply) => {
     const response = await pedidoController.checkout(request);
     return reply.status(response.statusCode).send(response.data);
   });
