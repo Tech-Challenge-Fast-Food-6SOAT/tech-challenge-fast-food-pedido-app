@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
+import { CPF, PagamentoStatus, Status } from '../../domain/value-objects';
 import type {
   IPagamentoGateway,
   IProdutoGateway,
 } from '../../interfaces/gateways';
 import type { Produto } from '../../types';
-import { CPF, PagamentoStatus, Status } from '../../value-objects';
 import type { PedidoUseCase } from './pedido';
 
 export class CheckoutUseCase {

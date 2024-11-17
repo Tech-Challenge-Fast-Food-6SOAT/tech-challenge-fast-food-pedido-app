@@ -1,7 +1,7 @@
 import type { PedidoGateway } from '../../adapters/gateways';
 import type { Pedido } from '../../domain/entities';
+import type { PagamentoStatus, Status } from '../../domain/value-objects';
 import type { PedidoProdutos } from '../../types';
-import type { PagamentoStatus, Status } from '../../value-objects';
 
 export class PedidoUseCase {
   public constructor(private readonly pedidoGateway: PedidoGateway) {}

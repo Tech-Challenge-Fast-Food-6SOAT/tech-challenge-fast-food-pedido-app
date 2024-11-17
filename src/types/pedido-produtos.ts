@@ -1,4 +1,4 @@
-import type { PagamentoStatus, Status } from '../value-objects';
+import type { PagamentoStatus, Status } from '../domain/value-objects';
 import type { Produto } from './produto';
 
 export interface PedidoProdutos {
