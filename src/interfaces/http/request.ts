@@ -1,6 +1,14 @@
+import type { PagamentoStatus, Status } from '../../domain/value-objects';
+
 export interface HttpRequest<T = any> {
-  body: T;
+  body: {
+    produtos: { id: string; quantidade: number }[];
+    pagamentoStatus: PagamentoStatus;
+    status: Status;
+  };
   headers: T;
-  params?: T;
-  query?: T;
+  params: {
+    id: string;
+  };
+  query: T;
 }

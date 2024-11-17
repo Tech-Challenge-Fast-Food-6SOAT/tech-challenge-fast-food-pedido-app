@@ -14,6 +14,7 @@ import {
   MicrosservicoPagamento,
   MicrosservicoProduto,
 } from '../infra/microsservico';
+import type { HttpRequest } from '../interfaces/http';
 
 const apiRoutes = async (app: FastifyInstance): Promise<void> => {
   const pedidoDbConnection = new PedidoDbConnection();
@@ -34,27 +35,33 @@ const apiRoutes = async (app: FastifyInstance): Promise<void> => {
   const pedidoController = new PedidoController(pedidoUseCase, checkoutUseCase);
 
   app.get('/pedidos', async (request, reply) => {
-    const response = await pedidoController.buscarPedidos(request);
+    const response = await pedidoController.buscarPedidos();
     return reply.status(response.statusCode).send(response.data);
   });
 
   app.get('/pedidos/pedido/:id/status-pagamento', async (request, reply) => {
-    const response = await pedidoController.statusPagamento(request);
+    const response = await pedidoController.statusPagamento(
+      request as HttpRequest
+    );
     return reply.status(response.statusCode).send(response.data);
   });
 
   app.patch('/pedidos/pedido/:id/status-pagamento', async (request, reply) => {
-    const response = await pedidoController.atualizarStatusPagamento(request);
+    const response = await pedidoController.atualizarStatusPagamento(
+      request as HttpRequest
+    );
     return reply.status(response.statusCode).send(response.data);
   });
 
   app.patch('/pedidos/pedido/:id/status', async (request, reply) => {
-    const response = await pedidoController.atualizarStatusPedido(request);
+    const response = await pedidoController.atualizarStatusPedido(
+      request as HttpRequest
+    );
     return reply.status(response.statusCode).send(response.data);
   });
 
   app.post('/pedidos/pedido/checkout', async (request, reply) => {
-    const response = await pedidoController.checkout(request);
+    const response = await pedidoController.checkout(request as HttpRequest);
     return reply.status(response.statusCode).send(response.data);
   });
 };
