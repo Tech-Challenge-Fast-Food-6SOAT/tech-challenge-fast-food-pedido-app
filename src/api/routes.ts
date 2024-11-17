@@ -43,6 +43,11 @@ const apiRoutes = async (app: FastifyInstance): Promise<void> => {
     return reply.status(response.statusCode).send(response.data);
   });
 
+  app.patch('/pedidos/pedido/:id/status-pagamento', async (request, reply) => {
+    const response = await pedidoController.atualizarStatusPagamento(request);
+    return reply.status(response.statusCode).send(response.data);
+  });
+
   app.patch('/pedidos/pedido/:id/status', async (request, reply) => {
     const response = await pedidoController.atualizarStatusPedido(request);
     return reply.status(response.statusCode).send(response.data);

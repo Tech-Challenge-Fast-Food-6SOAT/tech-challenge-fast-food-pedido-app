@@ -50,4 +50,19 @@ export class PedidoUseCase {
     }
     return pedido.pagamentoStatus;
   }
+
+  public async atualizarStatusPagamento(params: {
+    id: string;
+    pagamentoStatus: PagamentoStatus;
+  }): Promise<PedidoProdutos | null> {
+    const pedido = await this.pedidoGateway.buscarPedido(params.id);
+    if (!pedido) {
+      throw new Error('Pedido não encontrado');
+    }
+
+    return this.pedidoGateway.editar({
+      id: params.id,
+      value: { pagamentoStatus: params.pagamentoStatus },
+    });
+  }
 }

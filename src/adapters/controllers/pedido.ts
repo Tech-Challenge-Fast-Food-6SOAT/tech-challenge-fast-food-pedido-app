@@ -76,6 +76,34 @@ export class PedidoController {
     }
   }
 
+  public async atualizarStatusPagamento(
+    request: HttpRequest
+  ): Promise<HttpResponse> {
+    try {
+      const { id } = request.params;
+      const { pagamentoStatus } = request.body;
+
+      await this.pedidoUseCase.atualizarStatusPagamento({
+        id,
+        pagamentoStatus,
+      });
+
+      return {
+        data: {
+          message: 'Status do pagamento atualizado com sucesso!',
+        },
+        statusCode: 200,
+      };
+    } catch (err: any) {
+      return {
+        data: {
+          err: err?.message,
+        },
+        statusCode: 500,
+      };
+    }
+  }
+
   public async checkout(request: HttpRequest): Promise<HttpResponse> {
     try {
       const { produtos } = request.body;
