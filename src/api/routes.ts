@@ -6,6 +6,7 @@ import {
   PagamentoGateway,
   PedidoGateway,
   ProdutoGateway,
+  SecretsGateway,
 } from '../adapters/gateways';
 import { CheckoutUseCase, PedidoUseCase } from '../application/usecases';
 import { PedidoDbConnection } from '../infra/database/mongodb/db-connections';
@@ -18,9 +19,12 @@ const apiRoutes = async (app: FastifyInstance): Promise<void> => {
   const pedidoDbConnection = new PedidoDbConnection();
   const pedidoGateway = new PedidoGateway(pedidoDbConnection);
   const pedidoUseCase = new PedidoUseCase(pedidoGateway);
-  const microsservicoPagamentoGateway = new MicrosservicoPagamento();
+  const secretsGateway = new SecretsGateway();
+  const microsservicoPagamentoGateway = new MicrosservicoPagamento(
+    secretsGateway
+  );
   const pagamentoGateway = new PagamentoGateway(microsservicoPagamentoGateway);
-  const microsservicoProduto = new MicrosservicoProduto();
+  const microsservicoProduto = new MicrosservicoProduto(secretsGateway);
   const produtoGateway = new ProdutoGateway(microsservicoProduto);
   const checkoutUseCase = new CheckoutUseCase(
     pedidoUseCase,
