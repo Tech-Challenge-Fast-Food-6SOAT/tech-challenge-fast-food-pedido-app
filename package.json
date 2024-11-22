@@ -4,9 +4,10 @@
   "scripts": {
     "start": "tsx watch src/api/index.ts",
     "test": "jest --config jest.config.ts",
+    "test:detect-open-handles": "jest --config jest.config.ts --detectOpenHandles",
     "test:watch": "jest --config jest.config.ts --watch",
     "test:coverage": "jest --config jest.config.ts --coverage",
-    "test-bdd": "cucumber-js"
+    "ci:test": ".scripts/ci_test_coverage.sh"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +19,6 @@
     "@types/axios": "^0.9.36",
     "@types/jest": "^29.5.13",
     "@types/node": "^22.7.4",
-    "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
     "eslint": "8.43.0",
