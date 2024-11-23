@@ -79,7 +79,7 @@ describe('CheckoutUseCase', () => {
     it('should throw an error if no products are provided', async () => {
       const result = checkoutUseCase.checkout({
         produtos: [],
-        cpf: '12345678910',
+        cpf: '89101',
       });
       await expect(result).rejects.toThrow('Produtos não informados');
       expect(produtoGateway.buscarProdutoPorId).not.toHaveBeenCalled();
