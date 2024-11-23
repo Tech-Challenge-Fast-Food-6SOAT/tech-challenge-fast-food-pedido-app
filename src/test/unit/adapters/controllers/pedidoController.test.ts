@@ -58,6 +58,21 @@ describe('PedidoController', () => {
       expect(response.statusCode).toBe(500);
       expect(response.data).toEqual({ err: 'Erro interno' });
     });
+
+    it('should return 500 and error message: Unknown error', async () => {
+      (pedidoUseCase.atualizarStatusPedido as jest.Mock).mockRejectedValue(
+        'Erro interno'
+      );
+      const request = {
+        body: { status: 'Pronto' },
+        params: { id: '123' },
+      } as unknown as HttpRequest;
+      const response: HttpResponse =
+        await pedidoController.atualizarStatusPedido(request);
+
+      expect(response.statusCode).toBe(500);
+      expect(response.data).toEqual({ err: 'Unknown error' });
+    });
   });
 
   describe('statusPagamento', () => {
@@ -86,6 +101,19 @@ describe('PedidoController', () => {
 
       expect(response.statusCode).toBe(500);
       expect(response.data).toEqual({ err: 'Erro interno' });
+    });
+
+    it('should return 500 and error message: Unknown error', async () => {
+      (pedidoUseCase.statusPagamento as jest.Mock).mockRejectedValue(
+        'Erro interno'
+      );
+      const request = { params: { id: '123' } } as HttpRequest;
+      const response: HttpResponse = await pedidoController.statusPagamento(
+        request
+      );
+
+      expect(response.statusCode).toBe(500);
+      expect(response.data).toEqual({ err: 'Unknown error' });
     });
   });
 
@@ -121,6 +149,21 @@ describe('PedidoController', () => {
       expect(response.statusCode).toBe(500);
       expect(response.data).toEqual({ err: 'Erro interno' });
     });
+
+    it('should return 500 and error message: Unknown error', async () => {
+      (pedidoUseCase.atualizarStatusPagamento as jest.Mock).mockRejectedValue(
+        'Erro interno'
+      );
+      const request = {
+        body: { pagamentoStatus: 'Aprovado' },
+        params: { id: '123' },
+      } as unknown as HttpRequest;
+      const response: HttpResponse =
+        await pedidoController.atualizarStatusPagamento(request);
+
+      expect(response.statusCode).toBe(500);
+      expect(response.data).toEqual({ err: 'Unknown error' });
+    });
   });
 
   describe('checkout', () => {
@@ -150,6 +193,18 @@ describe('PedidoController', () => {
 
       expect(response.statusCode).toBe(500);
       expect(response.data).toEqual({ err: 'Erro interno' });
+    });
+
+    it('should return 500 and error message: Unknown error', async () => {
+      (checkoutUseCase.checkout as jest.Mock).mockRejectedValue('Erro interno');
+      const request = {
+        body: { produtos: [{ id: '123', quantidade: 2 }] },
+        headers: { cpf: '12345678900' },
+      } as HttpRequest;
+      const response: HttpResponse = await pedidoController.checkout(request);
+
+      expect(response.statusCode).toBe(500);
+      expect(response.data).toEqual({ err: 'Unknown error' });
     });
   });
 });
