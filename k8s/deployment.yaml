@@ -25,8 +25,8 @@ spec:
               memory: 256Mi
               cpu: 100m
           env:
-            - name: MONGODB_URL
+            - name: MONGODB_CONNECTION_STRING_PEDIDO
               valueFrom:
                 secretKeyRef:
                   name: pedido-app-secrets
-                  key: MONGODB_URL
+                  key: MONGODB_CONNECTION_STRING_PEDIDO
