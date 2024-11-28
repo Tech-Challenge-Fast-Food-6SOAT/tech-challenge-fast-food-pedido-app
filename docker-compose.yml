@@ -10,6 +10,9 @@ services:
     working_dir: /app/src
     environment:
       - MONGODB_CONNECTION_STRING_PEDIDO=${MONGODB_CONNECTION_STRING_PEDIDO}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
     networks:
       - default
 

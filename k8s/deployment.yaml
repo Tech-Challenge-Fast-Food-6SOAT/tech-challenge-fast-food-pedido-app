@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pedido-app
-          image: danilocassola/fiap-lanchonete-pedido:v1.1
+          image: danilocassola/fiap-lanchonete-pedido:v1.4
           ports:
             - containerPort: 3000
           resources:
@@ -30,3 +30,18 @@ spec:
                 secretKeyRef:
                   name: pedido-app-secrets
                   key: MONGODB_CONNECTION_STRING_PEDIDO
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: pedido-app-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pedido-app-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_SESSION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: pedido-app-secrets
+                  key: AWS_SESSION_TOKEN
