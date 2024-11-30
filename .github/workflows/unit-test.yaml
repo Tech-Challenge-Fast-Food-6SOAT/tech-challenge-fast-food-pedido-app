@@ -1,0 +1,25 @@
+name: Run Unit Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm run ci:test
+
+      - name: Post coverage
+        uses: vebr/jest-lcov-reporter@v0.2.0
+        with:
+          lcov_file: ./core/entity/coverage/lcov.info
