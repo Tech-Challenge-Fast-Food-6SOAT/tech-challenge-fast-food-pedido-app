@@ -22,4 +22,4 @@ jobs:
       - name: Post coverage
         uses: vebr/jest-lcov-reporter@v0.2.0
         with:
-          lcov_file: ./core/entity/coverage/lcov.info
+          lcov_file: ./coverage/lcov.info
