@@ -4,6 +4,7 @@ import type { PedidoUseCase } from '@/application/usecases';
 import { CheckoutUseCase } from '@/application/usecases';
 import type { Pedido } from '@/domain/entities';
 import { PagamentoStatus, Status } from '@/domain/value-objects';
+import type { IUserGateway } from '@/interfaces/gateways';
 
 describe('CheckoutUseCase', () => {
   const pedidoUseCase = {
@@ -15,10 +16,15 @@ describe('CheckoutUseCase', () => {
   const produtoGateway = {
     buscarProdutoPorId: jest.fn(),
   } as unknown as ProdutoGateway;
+  const userGateway = {
+    getUser: jest.fn(),
+    signUpUser: jest.fn(),
+  } as unknown as IUserGateway;
   const checkoutUseCase = new CheckoutUseCase(
     pedidoUseCase,
     pagamentoGateway,
-    produtoGateway
+    produtoGateway,
+    userGateway
   );
 
   beforeEach(() => {

@@ -106,10 +106,14 @@ export class PedidoController {
 
   public async checkout(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const { produtos } = request.body;
-      const { cpf } = request.headers as { cpf: string };
+      const { produtos, cliente } = request.body;
 
-      const data = await this.checkoutUseCase.checkout({ produtos, cpf });
+      const data = await this.checkoutUseCase.checkout({
+        produtos,
+        cpf: cliente?.cpf,
+        email: cliente?.email,
+        name: cliente?.name,
+      });
 
       return {
         data,

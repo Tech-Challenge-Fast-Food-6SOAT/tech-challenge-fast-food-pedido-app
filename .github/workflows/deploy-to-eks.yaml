@@ -3,8 +3,6 @@ name: Deploy to EKS
 on:
   push:
     branches: ["main"]
-    paths:
-      - 'k8s/**'
   workflow_dispatch:
   workflow_run:
     workflows: ["Deploy to DockerHub"]

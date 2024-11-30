@@ -172,8 +172,10 @@ describe('PedidoController', () => {
       (checkoutUseCase.checkout as jest.Mock).mockResolvedValue(data);
 
       const request = {
-        body: { produtos: [{ id: '123', quantidade: 2 }] },
-        headers: { cpf: '12345678900' },
+        body: {
+          cliente: { cpf: '12345678900' },
+          produtos: [{ id: '123', quantidade: 2 }],
+        },
       } as HttpRequest;
       const response: HttpResponse = await pedidoController.checkout(request);
 
@@ -186,8 +188,10 @@ describe('PedidoController', () => {
         new Error('Erro interno')
       );
       const request = {
-        body: { produtos: [{ id: '123', quantidade: 2 }] },
-        headers: { cpf: '12345678900' },
+        body: {
+          cliente: { cpf: '12345678900' },
+          produtos: [{ id: '123', quantidade: 2 }],
+        },
       } as HttpRequest;
       const response: HttpResponse = await pedidoController.checkout(request);
 
@@ -198,8 +202,10 @@ describe('PedidoController', () => {
     it('should return 500 and error message: Unknown error', async () => {
       (checkoutUseCase.checkout as jest.Mock).mockRejectedValue('Erro interno');
       const request = {
-        body: { produtos: [{ id: '123', quantidade: 2 }] },
-        headers: { cpf: '12345678900' },
+        body: {
+          cliente: { cpf: '12345678900' },
+          produtos: [{ id: '123', quantidade: 2 }],
+        },
       } as HttpRequest;
       const response: HttpResponse = await pedidoController.checkout(request);
 
