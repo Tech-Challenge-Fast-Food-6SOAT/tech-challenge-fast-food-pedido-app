@@ -8,7 +8,7 @@ export class PedidoController {
     private readonly checkoutUseCase: CheckoutUseCase
   ) {}
 
-  public async buscarPedidos(request: HttpRequest): Promise<HttpResponse> {
+  public async buscarPedidos(): Promise<HttpResponse> {
     try {
       const pedidos = await this.pedidoUseCase.buscarPedidos();
 
@@ -16,10 +16,10 @@ export class PedidoController {
         data: pedidos,
         statusCode: 200,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return {
         data: {
-          err: err?.message,
+          err: err instanceof Error ? err.message : 'Unknown error',
         },
         statusCode: 500,
       };
@@ -45,10 +45,10 @@ export class PedidoController {
         },
         statusCode: 200,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return {
         data: {
-          err: err?.message,
+          err: err instanceof Error ? err.message : 'Unknown error',
         },
         statusCode: 500,
       };
@@ -66,10 +66,38 @@ export class PedidoController {
         },
         statusCode: 200,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return {
         data: {
-          err: err?.message,
+          err: err instanceof Error ? err.message : 'Unknown error',
+        },
+        statusCode: 500,
+      };
+    }
+  }
+
+  public async atualizarStatusPagamento(
+    request: HttpRequest
+  ): Promise<HttpResponse> {
+    try {
+      const { id } = request.params;
+      const { pagamentoStatus } = request.body;
+
+      await this.pedidoUseCase.atualizarStatusPagamento({
+        id,
+        pagamentoStatus,
+      });
+
+      return {
+        data: {
+          message: 'Status do pagamento atualizado com sucesso!',
+        },
+        statusCode: 200,
+      };
+    } catch (err: unknown) {
+      return {
+        data: {
+          err: err instanceof Error ? err.message : 'Unknown error',
         },
         statusCode: 500,
       };
@@ -79,7 +107,7 @@ export class PedidoController {
   public async checkout(request: HttpRequest): Promise<HttpResponse> {
     try {
       const { produtos } = request.body;
-      const { cpf } = request.headers;
+      const { cpf } = request.headers as { cpf: string };
 
       const data = await this.checkoutUseCase.checkout({ produtos, cpf });
 
@@ -87,10 +115,10 @@ export class PedidoController {
         data,
         statusCode: 201,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return {
         data: {
-          err: err?.message,
+          err: err instanceof Error ? err.message : 'Unknown error',
         },
         statusCode: 500,
       };

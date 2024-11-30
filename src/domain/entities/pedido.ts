@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import type { Produto } from '../../types/produto';
-import type { PagamentoStatus, Status } from '../../value-objects';
+import type { PagamentoStatus, Status } from '../value-objects';
 
 export class Pedido {
   public constructor(

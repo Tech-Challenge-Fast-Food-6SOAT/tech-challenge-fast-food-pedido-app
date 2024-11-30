@@ -2,7 +2,7 @@
 import { Pedido } from '../../domain/entities/pedido';
 import type { DbConnection } from '../../interfaces/db/connection';
 import type { IPedidoGateway } from '../../interfaces/gateways/pedido';
-import type { PedidoProdutos } from '../../types/pedido-produtos';
+import type { PedidoProdutos } from '../../types';
 
 export class PedidoGateway implements IPedidoGateway {
   public constructor(private readonly dbConnection: DbConnection) {}
