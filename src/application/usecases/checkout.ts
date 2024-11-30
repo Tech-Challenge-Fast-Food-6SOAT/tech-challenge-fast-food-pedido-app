@@ -3,6 +3,7 @@ import { CPF, PagamentoStatus, Status } from '../../domain/value-objects';
 import type {
   IPagamentoGateway,
   IProdutoGateway,
+  IUserGateway,
 } from '../../interfaces/gateways';
 import type { Produto } from '../../types';
 import type { PedidoUseCase } from './pedido';
@@ -13,21 +14,31 @@ export class CheckoutUseCase {
   public constructor(
     private readonly pedidoUseCase: PedidoUseCase,
     private readonly pagamentoGateway: IPagamentoGateway,
-    private readonly produtoGateway: IProdutoGateway
+    private readonly produtoGateway: IProdutoGateway,
+    private readonly userGateway: IUserGateway
   ) {}
 
   public async checkout({
     produtos,
-    cpf,
+    cpf: rawCpf,
+    email,
+    name,
   }: {
     produtos: { id: string; quantidade: number }[];
     cpf: string;
+    email?: string;
+    name?: string;
   }): Promise<{ id: string; senha: string; qrCode: string }> {
-    const cliente = cpf ? new CPF(String(cpf)).getValue() : null;
+    const cpf = rawCpf ? new CPF(String(rawCpf)).getValue() : null;
+    if (cpf) {
+      const user = await this.userGateway.getUser(cpf);
+      if (!user) await this.userGateway.signUpUser({ cpf, email, name });
+    }
+
     await this._adicionarProdutos(produtos);
 
     const pedidoCriado = await this.pedidoUseCase.criar({
-      cliente,
+      cliente: cpf,
       produtos: this._produtos,
       total: this._calcularTotalPedido(this._produtos),
       status: new Status('Recebido'),
